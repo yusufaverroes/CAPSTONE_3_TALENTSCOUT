@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="Claude" version="24.0.0">
+  <diagram name="Architecture" id="arch1">
+    <mxGraphModel dx="1422" dy="757" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===== BACKGROUND GROUPS (z-order: behind everything) ===== -->
+        <mxCell id="bg-ing" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f9fc;strokeColor=#cccccc;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="1130" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="bg-rt" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fcf5;strokeColor=#cccccc;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="380" width="1130" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- ===== TITLE ===== -->
+        <mxCell id="title" value="TalentScout AI &#8212; Architecture Overview" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="380" y="20" width="640" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ===== INGESTION ROW ===== -->
+        <mxCell id="ing-label" value="INGESTION PIPELINE (offline, runs once)" style="text;html=1;align=left;whiteSpace=wrap;fontSize=12;fontStyle=2;fontColor=#666666" vertex="1" parent="1">
+          <mxGeometry x="60" y="90" width="400" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="resume-csv" value="Resume.csv&#10;2,484 rows&#10;24 categories" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="130" width="130" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="clean" value="Clean&#10;preserve&#10;multi-space&#10;(section delim)" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="220" y="130" width="120" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="chunk" value="Chunk&#10;hybrid&#10;section-aware&#10;500 chars" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="370" y="130" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="embed" value="Embed&#10;OpenAI text-embedding-3-small&#10;1536-d, cosine" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="540" y="130" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="qdrant" value="&lt;b&gt;QDRANT CLOUD&lt;/b&gt;&#10;&#10;&#8226; resume_chunks (41,497 pts)&#10;  search: MMR (&#955;=0.5)&#10;  fetch_k=60, top 15&#10;&#10;&#8226; resume_summaries (2,481 pts)&#10;  search: pure similarity&#10;  top 5" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fontSize=11;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=middle;align=left;spacingLeft=20" vertex="1" parent="1">
+          <mxGeometry x="820" y="105" width="320" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Ingestion arrows -->
+        <mxCell id="ia1" style="edgeStyle=none;html=1;endArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="resume-csv" target="clean">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia2" style="edgeStyle=none;html=1;endArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="clean" target="chunk">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia3" style="edgeStyle=none;html=1;endArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="chunk" target="embed">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia4" style="edgeStyle=none;html=1;endArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="embed" target="qdrant">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== RUNTIME ROW ===== -->
+        <mxCell id="rt-label" value="RUNTIME (per user query, LangGraph multi-agent)" style="text;html=1;align=left;whiteSpace=wrap;fontSize=12;fontStyle=2;fontColor=#666666" vertex="1" parent="1">
+          <mxGeometry x="60" y="390" width="500" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="user" value="User" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="60" y="430" width="80" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="streamlit" value="Streamlit UI&#10;chat, history,&#10;source panel,&#10;token usage" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="170" y="430" width="130" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="supervisor" value="Supervisor Agent&#10;&#10;Pydantic&#10;RoutingDecision&#10;(structured output)" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="330" y="430" width="170" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="workers" value="&lt;b&gt;3 Workers (ReAct)&lt;/b&gt;&#10;&#10;&#8226; Retrieval&#10;&#8226; Comparison&#10;&#8226; Summarizer" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;verticalAlign=middle;align=left;spacingLeft=15" vertex="1" parent="1">
+          <mxGeometry x="530" y="425" width="170" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tools" value="&lt;b&gt;RAG Tools (5)&lt;/b&gt;&#10;&#10;&#8226; 3 search tools&#10;&#8226; 2 lookup tools&#10;&#10;+ Cross-encoder Reranker&#10;ms-marco-MiniLM-L-6-v2&#10;(chunks only, top-N=5)" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=middle;align=left;spacingLeft=15" vertex="1" parent="1">
+          <mxGeometry x="730" y="395" width="260" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- Runtime arrows -->
+        <mxCell id="ra1" style="edgeStyle=none;html=1;endArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="user" target="streamlit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ra2" style="edgeStyle=none;html=1;endArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="streamlit" target="supervisor">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ra3" value="routes / returns" style="edgeStyle=none;html=1;endArrow=classic;startArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5;fontSize=10" edge="1" parent="1" source="supervisor" target="workers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ra4" value="tool calls" style="edgeStyle=none;html=1;endArrow=classic;startArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5;fontSize=10" edge="1" parent="1" source="workers" target="tools">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Tools to Qdrant (vertical bidirectional bridge) -->
+        <mxCell id="tools-qdrant" value="search / lookup" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=classic;startArrow=classic;exitX=0.5;exitY=0;entryX=0.5;entryY=1;fontSize=10;rounded=0;strokeWidth=2" edge="1" parent="1" source="tools" target="qdrant">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== FOOTER ===== -->
+        <mxCell id="footer" value="LangChain + LangGraph framework  |  Langfuse observability  |  Streamlit Cloud deployment" style="text;html=1;align=center;whiteSpace=wrap;fontSize=11;fontStyle=2;fontColor=#888888" vertex="1" parent="1">
+          <mxGeometry x="200" y="610" width="1000" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
