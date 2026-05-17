@@ -1,0 +1,51 @@
+# Secrets and credentials — NEVER commit
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Ingestion artifacts (regenerable, not source)
+processed_ids.json
+processed_summary_ids.json
+
+# Large data files (re-downloadable from Kaggle)
+data/*.csv
+data/*.xlsx
+dataset/resume/*.csv
+dataset/resume/*.xlsx
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+
+# Original assignment docs
+docs/

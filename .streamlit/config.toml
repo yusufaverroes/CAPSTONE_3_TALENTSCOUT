@@ -1,0 +1,18 @@
+[browser]
+# Disable Streamlit usage-stats collection. Lives under [browser] in
+# Streamlit 1.57+; under [server] it is rejected as "not a valid option".
+gatherUsageStats = false
+
+[server]
+# sentence-transformers pulls in `transformers`, whose optional vision
+# models lazily import `torchvision` (which we don't install and never use).
+# Streamlit's hot-reload file watcher walks every imported module's
+# __path__, triggering that lazy import and printing a flood of non-fatal
+# ModuleNotFoundError tracebacks on every run. A deployed/demo app needs no
+# hot-reload, so disable the watcher entirely — this removes the flood at
+# its source. Trade-off: code edits require a manual `streamlit run` restart.
+fileWatcherType = "none"
+
+[theme]
+base = "light"
+primaryColor = "#2563EB"
