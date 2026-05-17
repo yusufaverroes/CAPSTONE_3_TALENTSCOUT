@@ -67,7 +67,15 @@ class TalentScoutVectorStore:
         """
         if not category:
             return None
-        normalised = category.strip().upper()
+        # The LLM often passes a paraphrased category: "HUMAN-RESOURCES" for
+        # "HR", "Business Development" for "BUSINESS-DEVELOPMENT". Canonicalise
+        # before matching: upper + space->hyphen fixes the whole spacing/hyphen
+        # class, a tiny alias map covers genuine abbreviations. A category that
+        # is still unknown after this fails loud — an empty filter result is
+        # otherwise indistinguishable from "no matching candidates".
+        aliases = {"HUMAN-RESOURCES": "HR", "IT": "INFORMATION-TECHNOLOGY"}
+        normalised = category.strip().upper().replace(" ", "-")
+        normalised = aliases.get(normalised, normalised)
         if normalised not in config.CATEGORIES:
             raise ValueError(
                 f"Unknown category {category!r}. "
