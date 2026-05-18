@@ -28,7 +28,9 @@ def route_from_supervisor(state: AgentState) -> str:
     """Translate the supervisor decision into the next graph hop.
 
     Three end conditions, in order:
-    1. The supervisor says FINISH.
+    1. The supervisor says FINISH. This also covers an out-of-scope request:
+       the supervisor refuses it directly (appending the refusal to
+       ``messages``) and routes FINISH, so the turn ends before any worker.
     2. Scoped loop-breaker: the supervisor routes to the *same* worker that
        just ran. No new user input can arrive mid-run, so re-running the
        worker that already handled this turn is always redundant — treat the
